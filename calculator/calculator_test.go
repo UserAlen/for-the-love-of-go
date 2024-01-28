@@ -22,7 +22,7 @@ func TestAdd(t *testing.T) {
 	}
 }
 
-func TestSubstract(t *testing.T) {
+func TestSubtract(t *testing.T) {
 	t.Parallel()
 
 	var a, b float64
@@ -30,11 +30,11 @@ func TestSubstract(t *testing.T) {
 	a = 4
 	b = 2
 
-	got := calculator.Substract(a, b)
+	got := calculator.Subtract(a, b)
 	var want float64 = 2
 
 	if got != want {
-		t.Errorf("Substract(%.1f, %.1f): got %.1f want %.1f", a, b, got, want)
+		t.Errorf("Subtract(%.1f, %.1f): got %.1f want %.1f", a, b, got, want)
 	}
 
 }
