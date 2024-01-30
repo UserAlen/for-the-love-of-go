@@ -25,16 +25,21 @@ func TestAdd(t *testing.T) {
 func TestSubtract(t *testing.T) {
 	t.Parallel()
 
-	var a, b float64
+	type testCases struct {
+		a, b, want float64
+	}
 
-	a = 4
-	b = 2
+	tcs := []testCases{
+		{a: 5, b: 2, want: 3},
+		{a: 55, b: 5, want: 50},
+	}
 
-	got := calculator.Subtract(a, b)
-	var want float64 = 2
+	for _, tc := range tcs {
+		got := calculator.Subtract(tc.a, tc.b)
 
-	if got != want {
-		t.Errorf("Subtract(%.1f, %.1f): got %.1f want %.1f", a, b, got, want)
+		if got != tc.want {
+			t.Errorf("Subtract(%.1f, %.1f): got %.1f want %.1f", tc.a, tc.b, got, tc.want)
+		}
 	}
 
 }
