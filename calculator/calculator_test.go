@@ -26,16 +26,17 @@ func TestSubtract(t *testing.T) {
 	t.Parallel()
 
 	type testCases struct {
+		fn         func(float64, float64) float64
 		a, b, want float64
 	}
 
 	tcs := []testCases{
-		{a: 5, b: 2, want: 3},
-		{a: 55, b: 5, want: 50},
+		{fn: calculator.Subtract, a: 5, b: 2, want: 3},
+		{fn: calculator.Subtract, a: 55, b: 5, want: 50},
 	}
 
 	for _, tc := range tcs {
-		got := calculator.Subtract(tc.a, tc.b)
+		got := tc.fn(tc.a, tc.b)
 
 		if got != tc.want {
 			t.Errorf("Subtract(%.1f, %.1f): got %.1f want %.1f", tc.a, tc.b, got, tc.want)
@@ -91,4 +92,28 @@ func TestDivide(t *testing.T) {
 		}
 	}
 
+}
+
+func TestAddSubMul(t *testing.T) {
+	t.Parallel()
+
+	type testCase struct {
+		fnName     string
+		fn         func(float64, float64) float64
+		a, b, want float64
+	}
+
+	tcs := []testCase{
+		{fnName: "Add", fn: calculator.Add, a: 5, b: 5, want: 10},
+		{fnName: "Subtract", fn: calculator.Subtract, a: 7, b: 2, want: 5},
+		{fnName: "Multiply", fn: calculator.Multiply, a: 55, b: 5, want: 275},
+	}
+
+	for _, tc := range tcs {
+		got := tc.fn(tc.a, tc.b)
+
+		if got != tc.want {
+			t.Errorf("%q(%f, %f): got %f, want %f", tc.fnName, tc.a, tc.b, got, tc.want)
+		}
+	}
 }
