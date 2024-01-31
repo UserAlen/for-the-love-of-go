@@ -73,22 +73,26 @@ func TestMultiply(t *testing.T) {
 func TestDivide(t *testing.T) {
 	t.Parallel()
 
-	type testCase struct {
-		a, b, want float64
-	}
-
-	tcs := []testCase{
-		{a: 5, b: 2, want: 2.5},
-		{a: 6, b: 3, want: 2},
-		{a: 75, b: 5, want: 15}, //always put trailing comma
-		{a: 8, b: 2, want: 8 / 2},
+	tcs := []struct {
+		a, b        float64
+		want        float64
+		errExpected bool
+	}{
+		{a: 10, b: 5, want: 2, errExpected: false},
+		{a: 2, b: 0, want: 9999, errExpected: true},
 	}
 
 	for _, tc := range tcs {
-		got := calculator.Divide(tc.a, tc.b)
+		got, err := calculator.Divide(tc.a, tc.b)
 
-		if got != tc.want {
-			t.Errorf("Divide(%f, %f): want %f got %f", tc.a, tc.b, got, tc.want)
+		errReceived := (err != nil)
+
+		if errReceived != tc.errExpected {
+			t.Fatal("Divide by zero: want error, got nil")
+		}
+
+		if !errReceived && got != tc.want {
+			t.Errorf("Divide(%.1f, %.1f): want %.1f got %.1f", tc.a, tc.b, tc.want, got)
 		}
 	}
 
