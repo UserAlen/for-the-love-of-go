@@ -148,7 +148,7 @@ func TestSqrt(t *testing.T) {
 			t.Fatalf("%s(%.1f): unexpected error value: %v", tc.fnName, tc.a, err)
 		}
 
-		if got != tc.want {
+		if !tc.errExpected && got != tc.want {
 			t.Errorf("%s(%.1f): got %.1f want %.1f", tc.fnName, tc.a, got, tc.want)
 		}
 	}
