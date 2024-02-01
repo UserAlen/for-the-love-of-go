@@ -88,7 +88,7 @@ func TestDivide(t *testing.T) {
 		errReceived := (err != nil)
 
 		if errReceived != tc.errExpected {
-			t.Fatal("Divide by zero: want error, got nil")
+			t.Fatalf("Divide(%.1f, %.1f): unexpected error value: %v", tc.a, tc.b, err)
 		}
 
 		if !errReceived && got != tc.want {
@@ -118,6 +118,38 @@ func TestAddSubMul(t *testing.T) {
 
 		if got != tc.want {
 			t.Errorf("%q(%f, %f): got %f, want %f", tc.fnName, tc.a, tc.b, got, tc.want)
+		}
+	}
+}
+
+func TestSqrt(t *testing.T) {
+	t.Parallel()
+
+	type testCase struct {
+		fn          func(float64) (float64, error)
+		fnName      string
+		a           float64
+		want        float64
+		errExpected bool
+	}
+
+	tcs := []testCase{
+		{fn: calculator.Sqrt, fnName: "Sqrt", a: 4, want: 2, errExpected: false},
+		{fn: calculator.Sqrt, fnName: "Sqrt", a: 0, want: 0, errExpected: false},
+		{fn: calculator.Sqrt, fnName: "Sqrt", a: -1, want: 9999, errExpected: true},
+	}
+
+	for _, tc := range tcs {
+		got, err := tc.fn(tc.a)
+
+		errReceived := (err != nil)
+
+		if errReceived != tc.errExpected {
+			t.Fatalf("%s(%.1f): unexpected error value: %v", tc.fnName, tc.a, err)
+		}
+
+		if got != tc.want {
+			t.Errorf("%s(%.1f): got %.1f want %.1f", tc.fnName, tc.a, got, tc.want)
 		}
 	}
 }
